@@ -22,8 +22,14 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f k8s-node-app.yaml
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
     - name: Test service URLs
       run: |
           minikube service list
           minikube service nodejs-app --url
           minikube logs --file=logs.txt
+
+
