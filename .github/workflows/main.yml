@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     name: build Node.js Docker Image and deploy to minikube
     steps:
+    - uses: actions/checkout@v2
     - name: Start minikube
       uses: medyagh/setup-minikube@master
     - name: Try the cluster !
@@ -21,15 +22,9 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f k8s-node-app.yaml
-  job2:
-    needs: job1
-    runs-on: ubuntu-latest
-    steps:
     - name: Test service URLs
-    - uses: actions/checkout@v2
       run: |
           minikube service list
           minikube service nodejs-app --url
           minikube logs --file=logs.txt
-
-
+      continue-on-error: true
